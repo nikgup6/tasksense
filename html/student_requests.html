@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Requests</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 flex items-center justify-center min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Back to Home Button -->
+        <div class="mb-6">
+            <a href="student_homepage.html" class="py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700">
+                &larr; Back to Home
+            </a>
+        </div>
+        <h1 class="text-4xl font-extrabold text-center mb-8">Your Requests</h1>
+
+        <!-- Tab Navigation -->
+        <div class="flex justify-center space-x-8 mb-8">
+            <button id="upcoming-tab" class="tab-btn py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-500">Upcoming</button>
+            <button id="pending-tab" class="tab-btn py-2 px-4 bg-yellow-600 text-white rounded-lg hover:bg-yellow-500">Pending</button>
+            <button id="completed-tab" class="tab-btn py-2 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-500">Completed</button>
+        </div>
+
+        <!-- Upcoming Requests Section -->
+        <div id="upcoming-requests" class="requests-section">
+            <div class="bg-gray-800 p-4 rounded-lg shadow hover:bg-gray-700 cursor-pointer" onclick="openRequestDetails('Upcoming Request 1', 'Dr. Smith', 'Request to discuss final project progress.', '2025-02-15', '10:00 AM')">
+                <p class="font-medium text-lg">Upcoming Request 1</p>
+                <p class="text-sm text-gray-400">Meeting with Dr. Smith</p>
+            </div>
+        </div>
+
+        <!-- Pending Requests Section -->
+        <div id="pending-requests" class="requests-section hidden">
+            <div class="bg-gray-800 p-4 rounded-lg shadow hover:bg-gray-700 cursor-pointer" onclick="openRequestDetails('Pending Request 1', 'Prof. Johnson', 'Clarification on assignment submission guidelines.', '2025-02-17', '1:30 PM')">
+                <p class="font-medium text-lg">Pending Request 1</p>
+                <p class="text-sm text-gray-400">Awaiting confirmation</p>
+            </div>
+        </div>
+
+        <!-- Completed Requests Section -->
+        <div id="completed-requests" class="requests-section hidden">
+            <div class="bg-gray-800 p-4 rounded-lg shadow hover:bg-gray-700 cursor-pointer" onclick="openRequestDetails('Completed Request 1', 'Dr. Adams', 'Discussion about exam preparation tips.', '2025-02-10', '2:00 PM')">
+                <p class="font-medium text-lg">Completed Request 1</p>
+                <p class="text-sm text-gray-400">Meeting completed</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Details Modal -->
+    <div id="request-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
+            <button id="close-modal" class="absolute top-2 right-2 text-gray-300 hover:text-white text-lg">&times;</button>
+            <h3 id="modal-title" class="text-2xl font-bold mb-4">Request Title</h3>
+            <p><strong>Professor Name:</strong> <span id="modal-professor"></span></p>
+            <p><strong>Description:</strong> <span id="modal-description"></span></p>
+            <p><strong>Meeting Date:</strong> <span id="modal-date"></span></p>
+            <p><strong>Meeting Time:</strong> <span id="modal-time"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Handle tab switching
+        const tabs = document.querySelectorAll(".tab-btn");
+        const sections = document.querySelectorAll(".requests-section");
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener("click", () => {
+                // Hide all sections
+                sections.forEach(section => section.classList.add("hidden"));
+                // Show the corresponding section
+                sections[index].classList.remove("hidden");
+
+                // Remove active styles from all tabs
+                tabs.forEach(t => {
+                    t.classList.remove("font-bold");
+                    t.classList.replace("bg-blue-700", "bg-blue-600");
+                    t.classList.replace("bg-yellow-700", "bg-yellow-600");
+                    t.classList.replace("bg-gray-700", "bg-gray-600");
+                });
+
+                // Add active styles to the clicked tab
+                tab.classList.add("font-bold");
+                if (tab.id === "upcoming-tab") tab.classList.replace("bg-blue-600", "bg-blue-700");
+                else if (tab.id === "pending-tab") tab.classList.replace("bg-yellow-600", "bg-yellow-700");
+                else if (tab.id === "completed-tab") tab.classList.replace("bg-gray-600", "bg-gray-700");
+            });
+        });
+
+        // Open request details modal
+        function openRequestDetails(title, professor, description, date, time) {
+            document.getElementById("modal-title").textContent = title;
+            document.getElementById("modal-professor").textContent = professor;
+            document.getElementById("modal-description").textContent = description;
+            document.getElementById("modal-date").textContent = date;
+            document.getElementById("modal-time").textContent = time;
+            document.getElementById("request-modal").classList.remove("hidden");
+        }
+
+        // Close the modal
+        document.getElementById("close-modal").addEventListener("click", function () {
+            document.getElementById("request-modal").classList.add("hidden");
+        });
+    </script>
+</body>
+</html>

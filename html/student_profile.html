@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-6xl bg-gray-800 shadow-lg rounded-2xl p-8 border border-gray-700">
+        <h2 class="text-4xl font-extrabold text-gray-100 mb-8">Student Profile</h2>
+
+        <!-- Layout container -->
+        <div class="flex flex-wrap md:flex-nowrap space-x-8">
+            <!-- Profile Picture Section -->
+            <div class="flex-shrink-0">
+                <div class="relative w-40 h-40">
+                    <img id="profilePic" src="https://via.placeholder.com/150" alt="Profile Picture"
+                         class="w-full h-full rounded-full border-2 border-gray-600 object-cover">
+                    <input type="file" id="profilePicInput" accept="image/*"
+                           class="absolute inset-0 opacity-0 cursor-pointer" disabled>
+                </div>
+            </div>
+
+            <!-- Form Section -->
+            <form id="profileForm" class="w-full space-y-6">
+                <!-- Full Name -->
+                <div>
+                    <label for="fullName" class="block text-sm font-medium text-gray-300">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required disabled
+                        class="w-full mt-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-200">
+                </div>
+
+                <!-- Age -->
+                <div>
+                    <label for="age" class="block text-sm font-medium text-gray-300">Age</label>
+                    <input type="number" id="age" name="age" required disabled
+                        class="w-full mt-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-200">
+                </div>
+
+                <!-- Course -->
+                <div>
+                    <label for="course" class="block text-sm font-medium text-gray-300">Course</label>
+                    <input type="text" id="course" name="course" required disabled
+                        class="w-full mt-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-200">
+                </div>
+
+                <!-- Student ID -->
+                <div>
+                    <label for="studentId" class="block text-sm font-medium text-gray-300">Student ID</label>
+                    <input type="text" id="studentId" name="studentId" required disabled
+                        class="w-full mt-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-200">
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <label for="address" class="block text-sm font-medium text-gray-300">Address</label>
+                    <textarea id="address" name="address" required disabled
+                        class="w-full mt-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-200"></textarea>
+                </div>
+
+                <!-- Edit/Save/Reset Buttons -->
+                <div class="flex justify-between">
+                    <!-- Edit Button -->
+                    <button type="button" id="editBtn"
+                            class="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                        Edit
+                    </button>
+                
+                    <!-- Back to Login Button -->
+                    <a href="student_homepage.html" 
+                       class="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-center">
+                        Back to login
+                    </a>
+                
+                    <!-- Save and Reset Buttons -->
+                    <div id="actionButtons" class="hidden space-x-4">
+                        <button type="submit" id="saveChangesBtn"
+                                class="py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700">
+                            Save Changes
+                        </button>
+                        <button type="button" id="resetBtn"
+                                class="py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700">
+                            Reset to Defaults
+                        </button>
+                    </div>
+                </div>
+                
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const profileForm = document.getElementById("profileForm");
+        const editBtn = document.getElementById("editBtn");
+        const actionButtons = document.getElementById("actionButtons");
+        const formInputs = profileForm.querySelectorAll("input, textarea");
+
+        // Store initial default values
+        const defaultValues = {};
+        formInputs.forEach(input => {
+            defaultValues[input.name] = input.value;
+        });
+
+        // Enable editing when "Edit" is clicked
+        editBtn.addEventListener("click", function () {
+            formInputs.forEach(input => input.disabled = false);
+            actionButtons.classList.remove("hidden");
+            editBtn.classList.add("hidden");
+        });
+
+        // Reset to default values
+        document.getElementById("resetBtn").addEventListener("click", function () {
+            formInputs.forEach(input => {
+                input.value = defaultValues[input.name];
+                input.disabled = true;
+            });
+            actionButtons.classList.add("hidden");
+            editBtn.classList.remove("hidden");
+        });
+
+        // Simulate form submission
+        profileForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Profile changes have been saved!");
+            formInputs.forEach(input => input.disabled = true);
+            actionButtons.classList.add("hidden");
+            editBtn.classList.remove("hidden");
+
+            // Simulate saving to a database (for demonstration)
+            console.log("Form data saved:", Object.fromEntries(new FormData(profileForm).entries()));
+        });
+    </script>
+</body>
+</html>
