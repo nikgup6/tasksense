@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 flex flex-col items-center justify-center min-h-screen p-6">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full bg-gray-800 shadow-lg z-50">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center py-3">
+            <h1 class="text-xl font-bold text-gray-100">Student Portal</h1>
+            <div class="flex items-center space-x-6">
+                <!-- Search Bar -->
+                <div class="relative">
+                    <input type="text" placeholder="Search Faculty..." class="bg-gray-700 text-gray-200 rounded-full pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i data-lucide="search" class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"></i>
+                </div>
+                <!-- Mail Button -->
+                <div class="relative">
+                    <button id="mailButton" class="relative bg-gray-700 p-2 rounded-md hover:bg-gray-600">
+                        <i data-lucide="mail" class="w-6 h-6 text-gray-400"></i>
+                        <span id="mailCount" class="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full hidden">0</span>
+                    </button>
+                    <div id="mailMessages" class="absolute right-0 mt-2 w-64 bg-gray-700 rounded-md shadow-lg hidden p-3">
+                        <h4 class="text-gray-200 font-semibold">Notifications</h4>
+                        <ul id="mailList" class="text-gray-300 text-sm mt-2 space-y-1">
+                            <li>No new messages</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Settings Dropdown -->
+                <div class="relative">
+                    <button id="settingsButton" class="cursor-pointer">
+                        <i data-lucide="settings" class="w-6 h-6 text-gray-400 hover:text-blue-500"></i>
+                    </button>
+                    <div id="dropdownMenu" class="absolute right-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg hidden">
+                        <ul class="py-2">
+                            <li><a href="#" class="block px-4 py-2 text-gray-200 hover:bg-gray-600">Profile</a></li>
+                            <li><a href="#" class="block px-4 py-2 text-gray-200 hover:bg-gray-600">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="relative w-full max-w-4xl bg-gray-800 shadow-lg rounded-2xl p-6 border border-gray-700 mt-16">
+        <h2 class="text-3xl font-extrabold text-center text-gray-100 mb-6">Welcome, Student!</h2>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-gray-700 p-4 rounded-md flex items-center space-x-4 hover:bg-gray-600 cursor-pointer">
+                <i data-lucide="calendar" class="w-8 h-8 text-green-500"></i>
+                <span class="text-gray-100">Check Schedule</span>
+            </div>
+            <div class="bg-gray-700 p-4 rounded-md flex items-center space-x-4 hover:bg-gray-600 cursor-pointer">
+                <i data-lucide="message-circle" class="w-8 h-8 text-purple-500"></i>
+                <span class="text-gray-100">Chat with Faculty</span>
+            </div>
+        </div>
+
+        <!-- Available Faculty -->
+        <div class="bg-gray-700 p-4 rounded-md mb-6">
+            <h3 class="text-xl font-semibold text-gray-100 mb-3">Available Faculty</h3>
+            <ul class="space-y-2">
+                <li class="bg-gray-600 p-3 rounded-md flex justify-between items-center">
+                    <span>Professor A - NLP Expert</span>
+                    <button class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">Request Help</button>
+                </li>
+                <li class="bg-gray-600 p-3 rounded-md flex justify-between items-center">
+                    <span>Professor B - Machine Learning</span>
+                    <button class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">Request Help</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Toggle mail messages dropdown
+        document.getElementById("mailButton").addEventListener("click", function() {
+            document.getElementById("mailMessages").classList.toggle("hidden");
+        });
+
+        // Example mail messages with sender name and count update
+        function updateMail(messages) {
+            const mailList = document.getElementById("mailList");
+            const mailCount = document.getElementById("mailCount");
+            mailList.innerHTML = "";
+            if (messages.length > 0) {
+                messages.forEach(msg => {
+                    const li = document.createElement("li");
+                    li.textContent = msg.sender + ": " + msg.message;
+                    mailList.appendChild(li);
+                });
+                mailCount.textContent = messages.length > 3 ? "3+" : messages.length;
+                mailCount.classList.remove("hidden");
+            } else {
+                mailList.innerHTML = "<li>No new messages</li>";
+                mailCount.classList.add("hidden");
+            }
+        }
+
+        updateMail([
+            { sender: "Prof. A", message: "Appointment Confirmed" },
+            { sender: "Prof. B", message: "Meeting Rescheduled" }
+        ]);
+
+        // Toggle settings dropdown
+        document.getElementById("settingsButton").addEventListener("click", function() {
+            document.getElementById("dropdownMenu").classList.toggle("hidden");
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

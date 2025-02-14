@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-md bg-gray-800 shadow-lg rounded-2xl p-6 border border-gray-700">
+        <h2 class="text-3xl font-extrabold text-center text-gray-100 mb-6">Faculty Login</h2>
+        <form id="loginForm" action="/faculty-login" method="POST" class="space-y-4">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-300">Email Address</label>
+                <input type="email" id="email" name="email" required
+                    class="w-full mt-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-200">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
+                <input type="password" id="password" name="password" required
+                    class="w-full mt-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-200">
+            </div>
+
+            <div id="error-message" class="text-red-400 text-sm hidden"></div>
+
+            <button type="submit"
+                class="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                Login
+
+            </button>
+            
+
+            <p class="text-sm text-gray-400 text-center mt-4">
+                Don't have an account? <a href="faculty_signup.html" class="text-blue-400 hover:underline">Sign up here</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById("loginForm");
+        const errorMessage = document.getElementById("error-message");
+
+        loginForm.addEventListener("submit", function (e) {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                e.preventDefault();
+                errorMessage.textContent = "Please fill in all fields.";
+                errorMessage.classList.remove("hidden");
+            }
+        });
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+                    event.preventDefault(); // Prevent default form submission
+                    window.location.href = "faculty_homepage.html"; // Redirect to faculty home page
+                });
+    </script>
+</body>
+</html>

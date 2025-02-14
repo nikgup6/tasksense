@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome, Faculty!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 flex flex-col items-center justify-center min-h-screen p-6">
+    <div class="relative w-full max-w-4xl bg-gray-800 shadow-lg rounded-2xl p-6 border border-gray-700">
+        <h2 class="text-3xl font-extrabold text-center text-gray-100 mb-6">Welcome, Professor!</h2>
+        
+        <!-- Mail Icon for Requests -->
+        <div class="absolute top-4 right-6 flex items-center">
+            <input type="checkbox" id="showRequests" class="hidden">
+            <label for="showRequests" class="relative cursor-pointer">
+                <i data-lucide="mail" class="w-8 h-8 text-blue-500"></i>
+                <span id="requestCount" class="absolute -top-2 -right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs">0</span>
+            </label>
+        </div>
+        
+        <!-- Faculty Timetable -->
+        <div class="bg-gray-700 p-4 rounded-md mb-6">
+            <h3 class="text-xl font-semibold text-gray-100 mb-3">Your Timetable</h3>
+            <table class="w-full text-center text-gray-100 border-collapse border border-gray-600">
+                <thead>
+                    <tr class="bg-blue-600 text-white">
+                        <th class="p-3 border border-gray-600">Monday</th>
+                        <th class="p-3 border border-gray-600">Tuesday</th>
+                        <th class="p-3 border border-gray-600">Wednesday</th>
+                        <th class="p-3 border border-gray-600">Thursday</th>
+                        <th class="p-3 border border-gray-600">Friday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-3 border border-gray-600">9AM-10AM Class A</td>
+                        <td class="p-3 border border-gray-600">9AM-10AM Class B</td>
+                        <td class="p-3 border border-gray-600">9AM-10AM Class C</td>
+                        <td class="p-3 border border-gray-600">9AM-10AM Class D</td>
+                        <td class="p-3 border border-gray-600">9AM-10AM Class E</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 border border-gray-600 bg-gray-500">10AM-11AM Free</td>
+                        <td class="p-3 border border-gray-600">10AM-11AM Class A</td>
+                        <td class="p-3 border border-gray-600 bg-gray-500">10AM-11AM Free</td>
+                        <td class="p-3 border border-gray-600">10AM-11AM Class B</td>
+                        <td class="p-3 border border-gray-600 bg-gray-500">10AM-11AM Free</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Student Requests Section -->
+        <div id="requestsSection" class="bg-gray-700 p-4 rounded-md hidden">
+            <h3 class="text-xl font-semibold text-gray-100 mb-3">Student Requests</h3>
+            <ul id="requestsList" class="space-y-2">
+                <li class="bg-gray-600 p-3 rounded-md flex justify-between items-center">Student A - Need help with NLP model <span class="w-6 h-6 bg-red-500 rounded-full"></span></li>
+                <li class="bg-gray-600 p-3 rounded-md flex justify-between items-center">Student B - Requesting extra class <span class="w-6 h-6 bg-orange-400 rounded-full"></span></li>
+                <li class="bg-gray-600 p-3 rounded-md flex justify-between items-center">Student C - Urgent doubt regarding project <span class="w-6 h-6 bg-yellow-500 rounded-full"></span></li>
+                <li class="bg-gray-600 p-3 rounded-md flex justify-between items-center">Student D - Needs assistance with assignment <span class="w-6 h-6 bg-green-400 rounded-full"></span></li>
+                <li class="bg-gray-600 p-3 rounded-md flex justify-between items-center">Student E - Scheduling a consultation <span class="w-6 h-6 bg-blue-400 rounded-full"></span></li>
+                <li class="bg-gray-600 p-3 rounded-md flex justify-between items-center">Student F - Extra lab session request <span class="w-6 h-6 bg-purple-400 rounded-full"></span></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const showRequestsCheckbox = document.getElementById("showRequests");
+        const requestsSection = document.getElementById("requestsSection");
+        const requestCountBadge = document.getElementById("requestCount");
+        const studentRequests = document.querySelectorAll("#requestsList li").length;
+        
+        // Update request count
+        requestCountBadge.textContent = studentRequests > 5 ? "5+" : studentRequests;
+
+        showRequestsCheckbox.addEventListener("change", function () {
+            if (this.checked) {
+                requestsSection.classList.remove("hidden");
+            } else {
+                requestsSection.classList.add("hidden");
+            }
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
