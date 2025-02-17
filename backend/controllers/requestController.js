@@ -37,6 +37,6 @@ exports.updateRequestStatus = async (req, res) => {
         if (!request) return res.status(404).json({ error: 'Request not found' });
         res.json(request);
     } catch (error) {
-        res.status(500).json({ error: 'Error updating request status' });
+        res.status(500).json({ error: 'Errorr updating request status' });
     }
 };
