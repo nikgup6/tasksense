@@ -1,23 +1,16 @@
-// backend/server.js
+require('dotenv').config(); // Load environment variables
 const express = require('express');
-const dotenv = require('dotenv');
-const cors = require('cors');
-const connectDB = require('./config/db');
+const connectDB = require('./config/db'); // MongoDB connection
+const userRoutes = require('./routes/userRoutes'); // Import routes
 
-dotenv.config();
-connectDB();
+const app = express(); // Initialize Express
 
-const app = express();
-app.use(express.json());
-app.use(cors());
+connectDB(); // Connect to MongoDB
 
-// Serve uploaded profile pictures
-app.use('/uploads', express.static('uploads'));
+app.use(express.json()); // To parse JSON data
 
-// Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/user', require('./routes/user'));
-app.use('/api/requests', require('./routes/requests'));
+// Add routes AFTER app initialization
+app.use('/api/users', userRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
