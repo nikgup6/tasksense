@@ -55,46 +55,60 @@
 
     <script>
         const signupForm = document.getElementById("signupForm");
-        const errorMessage = document.getElementById("error-message");
+const errorMessage = document.getElementById("error-message");
 
-        signupForm.addEventListener("submit", function (e) {
-            const password = document.getElementById("password").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
+signupForm.addEventListener("submit", function (e) {
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
 
-            if (password !== confirmPassword) {
-                e.preventDefault();
-                errorMessage.textContent = "Passwords do not match.";
-                errorMessage.classList.remove("hidden");
-            }
-        });
+    // Prevent form submission if passwords don't match
+    if (password !== confirmPassword) {
+        e.preventDefault();
+        errorMessage.textContent = "Passwords do not match.";
+        errorMessage.classList.remove("hidden");
+        return;  // Don't proceed with the form submission
+    }
 
-        const userData = {
+    // Collect user data from the form
+    const userData = {
         fullName: document.getElementById("fullName").value,
         email: document.getElementById("email").value,
-        password: password,
-        confirmpassword: confirmPassword,
+        password: password,  
         studentId: document.getElementById("studentId").value,
-        };
-        console.log(userData);
-        const registerUser = async (userData) => {
+    };
+
+        // Call registerUser function to send data to the backend
+        registerUser(userData);
+
+        // Prevent default form submission
+        e.preventDefault();
+    });
+
+    // Function to send data to the backend
+    const registerUser = async (userData) => {
         try {
             const response = await fetch('http://localhost:5000/api/users/register', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',  // Ensure the server knows it's JSON
                 },
-                body: JSON.stringify(userData),
+                body: JSON.stringify(userData),  // Send the user data as JSON
             });
+
             const data = await response.json();
+
             if (response.ok) {
                 alert('User registered successfully');
+                window.location.href = 'student_homepage.html';  // Redirect to login page
             } else {
-                alert(data.error);
+                alert(data.error || 'Error registering user');
             }
         } catch (error) {
             console.error('Error:', error);
+            alert('An error occurred. Please try again.');
         }
     };
+
 
     </script>
 </body>
