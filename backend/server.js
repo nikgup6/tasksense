@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');  // For password comparison
+const jwt = require('jsonwebtoken'); // For token generation
 
 // Set up the app
 const app = express();
@@ -27,6 +29,8 @@ const User = mongoose.model('User', new mongoose.Schema({
 }));
 
 // Handle POST request to register user
+
+// Handle POST request to register user
 app.post('/api/users/register', async (req, res) => {
     const { fullName, email, password, studentId } = req.body;
 
@@ -35,18 +39,53 @@ app.post('/api/users/register', async (req, res) => {
         return res.status(400).json({ error: 'All fields are required' });
     }
 
-    // Save user to MongoDB
     try {
+        // Hash password before saving to the database
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Save user to MongoDB
         const newUser = new User({
             fullName,
             email,
-            password,
+            password: hashedPassword,  // Store the hashed password
             studentId,
         });
         await newUser.save();
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Error registering user' });
+    }
+});
+
+// Login Route
+app.post('/api/users/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    // Validation
+    if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required' });
+    }
+
+    try {
+        // Check if user exists
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ error: 'Invalid email' });
+        }
+
+        // Compare password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ error: 'Invalid email or password' });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign({ id: user._id }, 'your_jwt_secret_key', { expiresIn: '1h' });
+
+        res.status(200).json({ message: 'Login successful', token });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
     }
 });
 
