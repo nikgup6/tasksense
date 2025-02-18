@@ -9,7 +9,7 @@
 <body class="bg-gray-900 text-gray-200 flex items-center justify-center min-h-screen">
     <div class="w-full max-w-md bg-gray-800 shadow-lg rounded-2xl p-6 border border-gray-700">
         <h2 class="text-3xl font-extrabold text-center text-gray-100 mb-6">Student signup</h2>
-        <form id="signupForm" action="/signup" method="POST" class="space-y-4">
+        <form id="signupForm" action="http://localhost:5000/api/users/register" method="POST" class="space-y-4">
             <div>
                 <label for="fullName" class="block text-sm font-medium text-gray-300">Full Name</label>
                 <input type="text" id="fullName" name="fullName" required
@@ -67,6 +67,35 @@
                 errorMessage.classList.remove("hidden");
             }
         });
+
+        const userData = {
+        fullName: document.getElementById("fullName").value,
+        email: document.getElementById("email").value,
+        password: password,
+        confirmpassword: confirmPassword,
+        studentId: document.getElementById("studentId").value,
+        };
+        console.log(userData);
+        const registerUser = async (userData) => {
+        try {
+            const response = await fetch('http://localhost:5000/api/users/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                alert('User registered successfully');
+            } else {
+                alert(data.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     </script>
 </body>
 </html>
