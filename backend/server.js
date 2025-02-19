@@ -27,6 +27,70 @@ const User = mongoose.model('User', new mongoose.Schema({
     password: String,
     studentId: String,
 }));
+const Faculty = mongoose.model('Faculty', new mongoose.Schema({
+    fullName: String,
+    email: String,
+    password: String,
+    facultyId: String, // Faculty-specific identifier
+}));
+
+
+// Faculty Registration Route
+app.post('/api/faculty/register', async (req, res) => {
+    const { fullName, email, password, facultyId } = req.body;
+
+    // Validation
+    if (!fullName || !email || !password || !facultyId) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Hash password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Save faculty to MongoDB
+    try {
+        const newFaculty = new Faculty({
+            fullName,
+            email,
+            password: hashedPassword,
+            facultyId,
+        });
+        await newFaculty.save();
+        res.status(201).json({ message: 'Faculty registered successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error registering faculty' });
+    }
+});
+
+// Faculty Login Route
+app.post('/api/faculty/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    // Find faculty in the database
+    try {
+        const faculty = await Faculty.findOne({ email });
+        if (!faculty) {
+            return res.status(404).json({ error: 'Faculty not found' });
+        }
+
+        // Check password
+        const isPasswordValid = await bcrypt.compare(password, faculty.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ error: 'Invalid credentials' });
+        }
+
+        // If using JWT (optional)
+        const token = jwt.sign({ id: faculty._id, email: faculty.email }, 'your_jwt_secret_key', { expiresIn: '1h' });
+
+        res.status(200).json({ message: 'Login successful', token });
+    } catch (error) {
+        res.status(500).json({ error: 'Error logging in faculty' });
+    }
+});
+
+
+
+
 
 // Handle POST request to register user
 
