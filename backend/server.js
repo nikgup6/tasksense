@@ -82,7 +82,11 @@ app.post('/api/faculty/login', async (req, res) => {
         // If using JWT (optional)
         const token = jwt.sign({ id: faculty._id, email: faculty.email }, 'your_jwt_secret_key', { expiresIn: '1h' });
 
-        res.status(200).json({ message: 'Login successful', token });
+        res.status(200).json({
+            message: 'Login successful',
+            fullName: faculty.fullName,  // Include full name here
+            token: token,
+        });
     } catch (error) {
         res.status(500).json({ error: 'Error logging in faculty' });
     }
@@ -146,7 +150,11 @@ app.post('/api/users/login', async (req, res) => {
         // Generate JWT token
         const token = jwt.sign({ id: user._id }, 'your_jwt_secret_key', { expiresIn: '1h' });
 
-        res.status(200).json({ message: 'Login successful', token });
+        res.status(200).json({
+            message: 'Login successful',
+            fullName: user.fullName,  // Include full name here
+            token: token,
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });

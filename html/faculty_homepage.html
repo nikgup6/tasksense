@@ -9,7 +9,7 @@
 </head>
 <body class="bg-gray-900 text-gray-200 flex flex-col items-center justify-center min-h-screen p-6">
     <div class="relative w-full max-w-4xl bg-gray-800 shadow-lg rounded-2xl p-6 border border-gray-700">
-        <h2 class="text-3xl font-extrabold text-center text-gray-100 mb-6">Welcome, Professor!</h2>
+        <div id="welcomeMessage" class="text-3xl font-extrabold text-center text-gray-100 mb-6"></div>
         
         <!-- Mail Icon for Requests -->
         <div class="absolute top-4 right-6 flex items-center">
@@ -82,6 +82,21 @@
                 requestsSection.classList.add("hidden");
             }
         });
+        const facultyName = localStorage.getItem('facultyName');
+
+        // Display the welcome message
+        if (facultyName) {
+            document.getElementById('welcomeMessage').textContent = `Welcome, ${facultyName}`;
+        }
+        function logout() {
+            // Clear user data from localStorage
+            localStorage.removeItem('facultyName');
+            localStorage.removeItem('token'); // If you use a token, clear it as well
+
+            // Redirect to login page
+            window.location.href = 'faculty_login.html';
+        }
+
     </script>
     <script>
         lucide.createIcons();

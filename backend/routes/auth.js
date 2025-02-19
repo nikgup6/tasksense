@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/users'); // Your User model
+const User = require('../models/User'); // Your User model
 
 router.post('/api/users/login', async (req, res) => {
     const { email, password } = req.body;
@@ -22,7 +22,7 @@ router.post('/api/users/login', async (req, res) => {
         // Login successful: Return user info
         res.status(200).json({
             message: 'Login successful',
-            name: user.name, // Include the user's name
+            fullName: user.name, // Include the user's name
         });
     } catch (error) {
         res.status(500).json({ error: 'Error logging in' });

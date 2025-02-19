@@ -38,35 +38,54 @@
     <script>
         const loginForm = document.getElementById("loginForm");
         const errorMessage = document.getElementById("error-message");
-
+    
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+    
+            // Get form values
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+    
+            // Validate form fields
             if (!email || !password) {
-                e.preventDefault();
                 errorMessage.textContent = "Please fill in all fields.";
                 errorMessage.classList.remove("hidden");
-            }
-
-            const response = await fetch('http://localhost:5000/api/users/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
-            
-            const data = await response.json();
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                window.location.href = 'student_homepage.html'; // Redirect to homepage
+                return;
             } else {
-                alert(data.error);
+                errorMessage.classList.add("hidden"); // Hide error if fields are filled
+            }
+    
+            try {
+                // Send login request to the backend
+                const response = await fetch('http://localhost:5000/api/users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+    
+                const data = await response.json();
+    
+                if (data.fullName) {
+                    // Store the user's full name in localStorage
+                    localStorage.setItem('userName', data.fullName);
+    
+                    // Redirect to the student homepage
+                    window.location.href = 'student_homepage.html';
+                } else {
+                    // Show an error if login fails
+                    errorMessage.textContent = data.error || 'Login failed';
+                    errorMessage.classList.remove("hidden");
+                }
+            } catch (error) {
+                console.error('Error logging in:', error);
+                errorMessage.textContent = "An error occurred. Please try again.";
+                errorMessage.classList.remove("hidden");
             }
         });
-        
     </script>
+    
 </body>
 </html>

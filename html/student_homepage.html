@@ -40,7 +40,10 @@
                         <ul class="py-2">
                             <li><a href="student_profile.html" class="block px-4 py-2 text-gray-200 hover:bg-gray-600">Profile</a></li>
                             <li><a href="student_requests.html" class="block px-4 py-2 text-gray-200 hover:bg-gray-600">See All Requests</a></li>
-                            <li><a href="student_login.html" class="block px-4 py-2 text-gray-200 hover:bg-gray-600">Logout</a></li>
+                            <li>
+                                <a href="javascript:void(0);" class="block px-4 py-2 text-gray-200 hover:bg-gray-600" onclick="logout()">Logout</a>
+                            </li>
+                            
                         </ul>
                     </div>
                 </div>
@@ -50,7 +53,7 @@
 
     <!-- Main Content -->
     <div class="relative w-full max-w-4xl bg-gray-800 shadow-lg rounded-2xl p-6 border border-gray-700 mt-16">
-        <h2 class="text-3xl font-extrabold text-center text-gray-100 mb-6">Welcome, Student!</h2>
+        <div id="welcomeMessage" class="text-3xl font-extrabold text-center text-gray-100 mb-6"></div>
 
         <!-- Quick Actions -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -114,6 +117,22 @@
         document.getElementById("settingsButton").addEventListener("click", function() {
             document.getElementById("dropdownMenu").classList.toggle("hidden");
         });
+        // Get the user's name from localStorage
+        const userName = localStorage.getItem('userName');
+
+        // Display the welcome message
+        if (userName) {
+            document.getElementById('welcomeMessage').textContent = `Welcome, ${userName}`;
+        }
+        function logout() {
+            // Clear user data from localStorage
+            localStorage.removeItem('userName');
+            localStorage.removeItem('token'); // If you use a token, clear it as well
+
+            // Redirect to login page
+            window.location.href = 'student_login.html';
+        }
+
     </script>
     <script>
         lucide.createIcons();

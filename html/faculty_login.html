@@ -61,6 +61,18 @@
             });
             
             const data = await response.json();
+    
+                if (data.fullName) {
+                    // Store the user's full name in localStorage
+                    localStorage.setItem('facultyName', data.fullName);
+    
+                    // Redirect to the student homepage
+                    window.location.href = 'faculty_homepage.html';
+                } else {
+                    // Show an error if login fails
+                    errorMessage.textContent = data.error || 'Login failed';
+                    errorMessage.classList.remove("hidden");
+                }
             if (response.ok) {
                 localStorage.setItem('token', data.token);
                 window.location.href = 'faculty_homepage.html'; // Redirect to homepage
